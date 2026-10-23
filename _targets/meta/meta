@@ -1,0 +1,7 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+raw_data|stem|f876f75a179debdc|d9f684783fbe7936|f9ce1348fbcb5167|-1101284392||t20749.4969120824s|s2913b|2913|rds|local|vector|||0.01||
+clean_data|stem|87dc7560a0471303|52840b8807e55a8c|f0ed55252c29be8c|-259385813||t20749.4969127298s|s3442b|3442|rds|local|vector|||0||
+penguins_clean|object|113640d55beaea4f
+clean_penguins|function|752ff8520072b9aa
+raw_file|stem|7d53f33fbbabd46d|2a6d391427249cbd|2c530c1562a7fbd1|2084871332|data/penguins.csv|t20749.5018631238s|s17625b|17625|file|local|vector|||0||
+report|stem|7ff7864bcc999833|12ace81c8e142f09|9a752610f7654b2e|787668912|reports/penguins.html*reports/penguins.qmd|t20749.5024262725s|s25942b|25942|file|local|vector|||10.86||

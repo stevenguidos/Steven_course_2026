@@ -1,0 +1,135 @@
+---
+title: "Penguin Data Analysis"
+author: "Steven"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## 1. Introduction
+
+This report explores the relationship between body mass
+and flipper length in three Antarctic penguin species:
+Adelie, Chinstrap, and Gentoo.
+
+The analysis demonstrates how to import data, clean
+missing values, use a custom function, and visualize results.
+
+## 2. Load packages
+
+```{r}
+library(tidyverse)
+```
+
+## 3. Import the data
+
+The penguin dataset is stored as a CSV file in
+the project's data folder.
+
+```{r}
+penguins <- read.csv("data/penguins.csv")
+
+head(penguins)
+```
+
+## 4. Explore the original data
+
+First, we examine the structure and dimensions of
+the dataset.
+
+```{r}
+str(penguins)
+
+dim(penguins)
+
+summary(penguins)
+```
+
+### Check missing values
+
+```{r}
+colSums(is.na(penguins))
+```
+
+Some observations contain missing measurements.
+For our analysis, we need body mass and flipper length.
+
+## 5. Clean the data
+
+We use a custom function stored in `R/functions.R`.
+
+The function removes observations with missing body
+mass or flipper length and converts body mass from
+grams to kilograms.
+
+```{r}
+source("R/functions.R")
+
+penguins_clean <- clean_penguins(penguins)
+
+head(penguins_clean)
+```
+
+### Check the cleaning results
+
+```{r}
+nrow(penguins)
+
+nrow(penguins_clean)
+
+nrow(penguins) - nrow(penguins_clean)
+```
+
+The final calculation tells us how many observations
+were removed during cleaning.
+
+## 6. Create a figure
+
+We investigate the relationship between flipper
+length and body mass across penguin species.
+
+```{r}
+ggplot(
+  penguins_clean,
+  aes(
+    x = flipper_len,
+    y = body_mass_kg,
+    color = species
+  )
+) +
+  geom_point(size = 2, alpha = 0.7) +
+  labs(
+    title = "Penguin body mass vs flipper length",
+    x = "Flipper length (mm)",
+    y = "Body mass (kg)",
+    color = "Penguin species"
+  ) +
+  theme_minimal()
+```
+
+## 7. Summary by species
+
+We calculate the average body mass for each species.
+
+```{r}
+penguins_clean |>
+  group_by(species) |>
+  summarise(
+    mean_body_mass_kg = mean(body_mass_kg),
+    n = n(),
+    .groups = "drop"
+  )
+```
+
+## 8. Conclusion
+
+This analysis demonstrates a simple and reproducible
+workflow for working with ecological data in R.
+
+The data were imported, inspected, cleaned using a
+custom function, and visualized with ggplot2.
+
+The relationship between flipper length and body mass
+can be compared among the three penguin species.
