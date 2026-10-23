@@ -10,12 +10,9 @@ execute:
 
 ## 1. Introduction
 
-This report explores the relationship between body mass
-and flipper length in three Antarctic penguin species:
-Adelie, Chinstrap, and Gentoo.
+This report explores the relationship between body mass and flipper length in three Antarctic penguin species: Adelie, Chinstrap, and Gentoo.
 
-The analysis demonstrates how to import data, clean
-missing values, use a custom function, and visualize results.
+The analysis demonstrates how to import data, clean missing values, use a custom function, and visualize results.
 
 ## 2. Load packages
 
@@ -25,47 +22,57 @@ library(tidyverse)
 
 ## 3. Import the data
 
-The penguin dataset is stored as a CSV file in
-the project's data folder.
+The penguin dataset is stored as a CSV file in the project's data folder.
 
 ```{r}
-penguins <- read.csv("data/penguins.csv")
+# Identify this document's location within the project.
+here::i_am("reports/penguins.qmd")
+
+# Build the full path from the project root.
+data_file <- here::here("data", "penguins.csv")
+
+# Show exactly which file will be read.
+print(data_file)
+
+# Give a useful error if the file is unavailable.
+if (!file.exists(data_file)) {
+  stop("CSV not found at: ", data_file)
+}
+
+# Import the original, uncleaned data.
+penguins <- read.csv(data_file)
 
 head(penguins)
 ```
 
 ## 4. Explore the original data
 
-First, we examine the structure and dimensions of
-the dataset.
+Now we can make sure the data looks alright.
 
 ```{r}
-str(penguins)
-
-dim(penguins)
-
 summary(penguins)
 ```
 
-### Check missing values
+### Check for missing values
 
 ```{r}
 colSums(is.na(penguins))
 ```
 
-Some observations contain missing measurements.
-For our analysis, we need body mass and flipper length.
+Some observations contain missing measurements. For our analysis, we need body mass and flipper length.
 
 ## 5. Clean the data
 
-We use a custom function stored in `R/functions.R`.
+Here we can use a custom function stored in `R/functions.R`.
 
-The function removes observations with missing body
-mass or flipper length and converts body mass from
-grams to kilograms.
+The function removes observations with missing body mass or flipper length and converts body mass from grams to kilograms.
 
 ```{r}
-source("R/functions.R")
+source(here::here("R", "functions.R"))
+
+penguins_clean <- clean_penguins(penguins)
+
+head(penguins_clean)
 
 penguins_clean <- clean_penguins(penguins)
 
@@ -75,20 +82,14 @@ head(penguins_clean)
 ### Check the cleaning results
 
 ```{r}
-nrow(penguins)
-
-nrow(penguins_clean)
-
 nrow(penguins) - nrow(penguins_clean)
 ```
 
-The final calculation tells us how many observations
-were removed during cleaning.
+The final calculation tells us how many observations were removed during cleaning.
 
 ## 6. Create a figure
 
-We investigate the relationship between flipper
-length and body mass across penguin species.
+Now we can investigate the relationship between flipper length and body mass across penguin species.
 
 ```{r}
 ggplot(
@@ -125,11 +126,4 @@ penguins_clean |>
 
 ## 8. Conclusion
 
-This analysis demonstrates a simple and reproducible
-workflow for working with ecological data in R.
-
-The data were imported, inspected, cleaned using a
-custom function, and visualized with ggplot2.
-
-The relationship between flipper length and body mass
-can be compared among the three penguin species.
+Flipper length and body mass are correlated :D
